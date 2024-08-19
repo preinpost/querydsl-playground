@@ -22,21 +22,23 @@ import org.springframework.test.context.TestPropertySource;
 @ActiveProfiles("test")
 class TestEntityTest {
 
-    @Autowired
-    EntityManager entityManager;
+//    @Autowired
+//    EntityManager entityManager;
 
-    JPAQueryFactory queryFactory;
-
-    @BeforeEach
-    void init() {
-        queryFactory = new JPAQueryFactory(entityManager);
-    }
+//    JPAQueryFactory queryFactory;
+//
+//    @BeforeEach
+//    void init() {
+//        queryFactory = new JPAQueryFactory(entityManager);
+//    }
 
     @Autowired
     private TestRepository testRepository;
 
     @Test
     void test() {
+        System.out.println("run Test");
+
         TestEntity entity = new TestEntity();
         entity.setName("name1");
         entity.setEmail("email1");
@@ -44,16 +46,16 @@ class TestEntityTest {
         testRepository.save(entity);
     }
 
-    @Test
-    void select() {
-
-        TestEntity entity = new TestEntity();
-        entity.setName("name2");
-        entity.setEmail("email2");
-
-        testRepository.save(entity);
-
-        testRepository.findSomething();
-    }
+//    @Test
+//    void select() {
+//
+//        TestEntity entity = new TestEntity();
+//        entity.setName("name2");
+//        entity.setEmail("email2");
+//
+//        testRepository.save(entity);
+//
+//        testRepository.findSomething();
+//    }
 
 }

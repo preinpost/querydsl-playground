@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
     java
     id("org.springframework.boot") version "3.3.2"
@@ -24,8 +26,16 @@ repositories {
 }
 
 dependencies {
+    implementation("io.opentelemetry:opentelemetry-exporter-otlp")
+    implementation("io.opentelemetry:opentelemetry-exporter-logging")
+
+    implementation("io.opentelemetry:opentelemetry-api")
+    implementation("io.opentelemetry:opentelemetry-sdk")
+    implementation("io.opentelemetry.semconv:opentelemetry-semconv:1.26.0-alpha")
+
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-aop")
 
     implementation("com.querydsl:querydsl-jpa:5.1.0:jakarta")
     annotationProcessor("com.querydsl:querydsl-apt:5.1.0:jakarta")
