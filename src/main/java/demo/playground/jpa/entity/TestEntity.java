@@ -18,4 +18,13 @@ public class TestEntity {
     private String name;
 
     private String email;
+
+    public static TestEntity of(String name, String email) {
+        TestEntity newEntity = new TestEntity();
+        newEntity.name = name;
+        newEntity.email = email;
+
+        return newEntity;
+    }
+
 }

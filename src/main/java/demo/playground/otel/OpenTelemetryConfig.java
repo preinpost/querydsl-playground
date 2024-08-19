@@ -18,31 +18,35 @@ import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import io.opentelemetry.semconv.ResourceAttributes;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@RequiredArgsConstructor
 public class OpenTelemetryConfig {
+
+    private final LoggingSpanExporter loggingSpanExporter;
+    private final OtlpHttpSpanExporter otlpHttpSpanExporter;
+    private final LoggingMetricExporter loggingMetricExporter;
+    private final SystemOutLogRecordExporter systemOutLogRecordExporter;
+
     @Bean
     public OpenTelemetry openTelemetry() {
         Resource resource =
             Resource.getDefault().toBuilder().put(ResourceAttributes.SERVICE_NAME, "demo-server")
                 .put(ResourceAttributes.SERVICE_VERSION, "0.1.0").build();
 
-        // exporter
-        LoggingSpanExporter loggingSpanExporter = LoggingSpanExporter.create();
-        OtlpHttpSpanExporter otlpHttpSpanExporter = OtlpHttpSpanExporter.getDefault().toBuilder().build();
-
         SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder()
             .addSpanProcessor(SimpleSpanProcessor.create(otlpHttpSpanExporter))
             .setResource(resource).build();
 
         SdkMeterProvider sdkMeterProvider = SdkMeterProvider.builder().registerMetricReader(
-                PeriodicMetricReader.builder(LoggingMetricExporter.create()).build())
+                PeriodicMetricReader.builder(loggingMetricExporter).build())
             .setResource(resource).build();
 
         SdkLoggerProvider sdkLoggerProvider = SdkLoggerProvider.builder().addLogRecordProcessor(
-                BatchLogRecordProcessor.builder(SystemOutLogRecordExporter.create()).build())
+                BatchLogRecordProcessor.builder(systemOutLogRecordExporter).build())
             .setResource(resource).build();
 
         OpenTelemetry openTelemetry =

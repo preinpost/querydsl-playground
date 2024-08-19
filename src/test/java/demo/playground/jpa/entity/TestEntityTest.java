@@ -2,6 +2,7 @@ package demo.playground.jpa.entity;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import demo.playground.repository.TestRepository;
+import demo.playground.service.TestService;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,9 @@ class TestEntityTest {
     @Autowired
     private TestRepository testRepository;
 
+    @Autowired
+    private TestService testService;
+
     @Test
     void test() {
         System.out.println("run Test");
@@ -44,6 +48,9 @@ class TestEntityTest {
         entity.setEmail("email1");
 
         testRepository.save(entity);
+
+        String result = testService.doService();
+
     }
 
 //    @Test
